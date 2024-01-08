@@ -14,7 +14,7 @@ const INPUT_URL = process.env.INPUT_URL || 'file://' + GITHUB_WORKSPACE + '/test
 const INPUT_WAIT_FOR_TIMEOUT = parseInt(process.env.INPUT_WAIT_FOR_TIMEOUT, 10) || 500;
 const INPUT_FULL_PAGE = process.env.INPUT_FULL_PAGE == 'true';
 const INPUT_OMIT_BACKGROUND = process.env.INPUT_OMIT_BACKGROUND == 'true';
-const INPUT_CONSOLE_OUTPUT_ENABLED = process.env.INPUT_CONSOLE_OUTPUT_ENABLED == 'true';
+const INPUT_CONSOLE_OUTPUT_ENABLED = ( process.env.INPUT_CONSOLE_OUTPUT_ENABLED !== undefined && process.env.INPUT_CONSOLE_OUTPUT_ENABLED == 'true') || true;
 
 async function readYamlFile(filePath) {
   try {
