@@ -7,6 +7,10 @@ on:
 jobs:
   html:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
+
     steps:
     - uses: actions/checkout@v2
     - name: Run your action

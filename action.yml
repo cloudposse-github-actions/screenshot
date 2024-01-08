@@ -56,6 +56,7 @@ runs:
       with:
         node-version: 20
     - name: Install dependencies
+      shell: bash
       run: |
         npm install
     - name: Run test
