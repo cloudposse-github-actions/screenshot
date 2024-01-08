@@ -64,11 +64,13 @@ async function readYamlFile(filePath) {
 
   // Check if the custom.css file exists
   if (fsSync.existsSync('custom.css')) {
+    console.log('Injecting custom CSS');
     const customCss = await fs.readFile('custom.css', 'utf8');
     await page.addStyleTag({ content: customCss });
   }
 
   if (fsSync.existsSync('custom.yaml')) {
+    console.log('Rewritting content');
     // Read the element paths from the file
     const elementPaths = await readYamlFile('custom.yaml');
 
