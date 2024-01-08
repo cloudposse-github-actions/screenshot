@@ -4,17 +4,64 @@
     <style>
     body {
       overflow: hidden;
-      background-color: #0a1922;
-      background-image: url(https://cloudposse.com/wp-content/uploads/2019/01/cloudposse-white.svg);
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 50% auto;
+      background: rgb(2,0,36);
+      background: linear-gradient(139deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 56%, rgba(147,0,255,1) 100%);
+
       min-width: 100vw;
       min-height: 100vh;
+      color: #fff;
+      font-family: 'proxima-nova', sans-serif;
+      font-size: 12px;
     }
+
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .banner {
+      max-width: 80vw;
+      max-height: 80vh;
+      height: auto;
+      width: auto;
+      overflow: hidden;
+      font-size: 2.5em;
+      text-align: center;
+    }
+
+    .project img {
+      width: 20vw;
+    }
+
+    code {
+      color: #d9d9d9;
+    }
+
+    .project h1 {
+      color: #d9d9d9;
+      font-size: 2.0em;
+    }
+
+    .project .description {
+      line-height: 2.0em;
+    }
+
     </style>
   </head>
   <body>
-    <h1>Cloud Posse</h1>
+    <div class="container">
+      <div class="banner">
+        <div class="project">
+          <img id="logo" src="https://cloudposse.com/wp-content/uploads/2019/01/cloudposse-white.svg"/>
+          <h1 id="name">Example</h1>
+          <div id="desc" class="description">
+            Example screenshot generated from the <code>test/html/</code> folder
+          </div>
+        </div>
+     </div>
+   </div>
   </body>
 </html>

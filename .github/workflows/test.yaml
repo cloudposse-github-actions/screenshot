@@ -27,7 +27,8 @@ jobs:
         output: "docs/example.png"
         css: |
           body {
-            background: red;
+            background: rgb(2,0,36);
+            background: linear-gradient(139deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 56%, rgba(147,0,255,1) 100%);
           }
         customizations: |
           "#name": "${{ github.event.repository.name }}"        
