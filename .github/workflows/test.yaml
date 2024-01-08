@@ -23,7 +23,7 @@ jobs:
       uses: ./ # Use the path to your action directory
       with:
         # Your action's inputs
-        url: "file://./test/html/index.html"
+        url: "file://${{github.workspace}}/test/html/index.html"
         output: "docs/example.png"
         css: |
           body {
@@ -32,8 +32,8 @@ jobs:
           }
         customizations: |
           "#name": "${{ github.event.repository.name }}"        
-        canvasWidth: 800
-        canvasHeight: 600
+        viewportWidth: 800
+        viewportHeight: 600
         imageQuality: 80
 
     - uses: stefanzweifel/git-auto-commit-action@v4

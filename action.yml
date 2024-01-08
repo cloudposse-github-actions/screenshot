@@ -70,8 +70,8 @@ runs:
         INPUT_OUTPUT=${{ inputs.output }}
         INPUT_OUTPUT_TYPE=${{ inputs.outputType }}
         INPUT_OMIT_BACKGROUND=${{ inputs.omitBackground }}
-        INPUT_CANVAS_WIDTH=${{ inputs.canvasWidth }}
-        INPUT_CANVAS_HEIGHT=${{ inputs.canvasHeight }}
+        INPUT_VIEWPORT_WIDTH=${{ inputs.viewportWidth }}
+        INPUT_VIEWPORT_HEIGHT=${{ inputs.viewportHeight }}
         INPUT_IMAGE_QUALITY=${{ inputs.imageQuality }}
         INPUT_CONSOLE_OUTPUT_ENABLED=${{ inputs.consoleOutputEnabled }}
         INPUT_DEVICE_SCALE_FACTOR=${{ inputs.deviceScaleFactor }}

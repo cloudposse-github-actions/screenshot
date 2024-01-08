@@ -68,27 +68,32 @@ jobs:
   screenshot:
     runs-on: ubuntu-latest
     concurrency:
-group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-cancel-in-progress: true
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
 
     steps:
     - uses: actions/checkout@v2
     - name: Run this composite action
-id: screenshot
-uses: cloudposse-github-actions/screenshot@v0
-with:
-  url: "file://./test/html/index.html"
-  output: "docs/example.png"
-  css: |
-    body {
-      background: rgb(2,0,36);
-      background: linear-gradient(139deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 56%, rgba(147,0,255,1) 100%);
-    }
-  customizations: |
-    "#name": "${{ github.event.repository.name }}"        
-  canvasWidth: 800
-  canvasHeight: 600
-  imageQuality: 80
+      id: screenshot
+      uses: cloudposse-github-actions/screenshot@v0
+      with:
+        url: "file://${{github.workspace}}/test/html/index.html"
+        output: "docs/example.png"
+        
+        # Overwrite any CSS
+        css: |
+          body {
+            background: rgb(2,0,36);
+            background: linear-gradient(139deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 56%, rgba(147,0,255,1) 100%);
+          }
+
+        # Replace any text using JQuery-style CSS path selectors" 
+        customizations: |
+          "#name": "${{ github.event.repository.name }}"        
+
+        # Set the width & height of the viewport
+        viewportWidth: 800
+        viewportHeight: 600
  ```
 
 

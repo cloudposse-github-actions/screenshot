@@ -3,8 +3,17 @@ const fs = require('fs').promises; // Import the fs module
 const fsSync = require('fs');
 const yaml = require('js-yaml');
 
-const GITHUB_WORKSPACE = process.env.GITHUB_WORKSPACE;
-const INPUT_OUTPUT = process.env.INPUT_OUTPUT;
+const GITHUB_WORKSPACE = process.env.GITHUB_WORKSPACE || '.';
+const INPUT_OUTPUT = process.env.INPUT_OUTPUT || 'docs/example.png';
+const INPUT_OUTPUT_TYPE = process.env.INPUT_OUTPUT_TYPE || 'png';
+const INPUT_IMAGE_QUALITY = process.env.INPUT_IMAGE_QUALITY || 100;
+const INPUT_DEVICE_SCALE_FACTOR = process.env.INPUT_DEVICE_SCALE_FACTOR || 2;
+const INPUT_VIEWPORT_WIDTH = process.env.INPUT_VIEWPORT_WIDTH || 2000;
+const INPUT_VIEWPORT_HEIGHT = process.env.INPUT_VIEWPORT_HEIGHT || 800;
+const INPUT_URL = process.env.INPUT_URL || 'file://' + GITHUB_WORKSPACE + '/test/html/index.html';
+const INPUT_WAIT_FOR_TIMEOUT = process.env.INPUT_WAIT_FOR_TIMEOUT || 500;
+const INPUT_FULL_PAGE = process.env.INPUT_FULL_PAGE || false;
+const INPUT_OMIT_BACKGROUND = process.env.INPUT_OMIT_BACKGROUND || true;
 
 async function readYamlFile(filePath) {
   try {
@@ -23,7 +32,7 @@ async function readYamlFile(filePath) {
 (async () => {
   const browser = await puppeteer.launch({headless: 'new', dumpio: false});
   const page = await browser.newPage();
-  await page.setViewport({ width: 2000, height: 800, deviceScaleFactor: 2});
+  await page.setViewport({ width: INPUT_VIEWPORT_WIDTH, height: INPUT_VIEWPORT_HEIGHT, deviceScaleFactor: INPUT_DEVICE_SCALE_FACTOR });
 
   const { blue, cyan, green, magenta, red, yellow } = require('colorette')
   page
@@ -43,11 +52,11 @@ async function readYamlFile(filePath) {
       console.log(green(`${response.status()} ${response.url()}`)))
     .on('requestfailed', request =>
       console.log(magenta(`${request.failure().errorText} ${request.url()}`)))
-
-  await page.goto('file://' + GITHUB_WORKSPACE + '/test/html/index.html', {
+  console.log('Navigating to ' + INPUT_URL);
+  await page.goto(INPUT_URL, {
     waitUntil: 'networkidle2',
   });
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(INPUT_WAIT_FOR_TIMEOUT);
 
   // Check if the custom.css file exists
   if (fsSync.existsSync('custom.css')) {
@@ -74,9 +83,13 @@ async function readYamlFile(filePath) {
     }, elementPaths);
   
     await page.waitForTimeout(2000);
+  
   }
-
-  //await page.screenshot({path: INPUT_OUTPUT, 'quality': 100, 'type': 'jpeg', fullPage: false, omitBackground: true});
-  await page.screenshot({path: INPUT_OUTPUT, 'type': 'png', fullPage: false, omitBackground: true});
+  if (INPUT_OUTPUT_TYPE == "jpeg") {
+    // Quality parameter is only valid for JPEG images
+    await page.screenshot({path: INPUT_OUTPUT, 'quality': INPUT_IMAGE_QUALITY, 'type': INPUT_OUTPUT_TYPE, fullPage: INPUT_FULL_PAGE, omitBackground: INPUT_OMIT_BACKGROUND});
+  } else {
+    await page.screenshot({path: INPUT_OUTPUT, 'type': INPUT_OUTPUT_TYPE, fullPage: INPUT_FULL_PAGE, omitBackground: INPUT_OMIT_BACKGROUND});
+  }
   await browser.close();
 })();
