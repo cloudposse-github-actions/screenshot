@@ -60,7 +60,7 @@ runs:
         name: puppeteer-chrome
         options: '-i --init --cap-add=SYS_ADMIN -v ${{ github.workspace }}:${{ github.workspace }}'
         args: |
-          bash -c 'cd ${{ github.workspace }} && npm install && node main.js'  
+          bash -c 'cd ${{ github.workspace }} && mkdir node_modules && chmod 777 node_modules && npm install && node main.js'  
 
     - id: context
       shell: bash
