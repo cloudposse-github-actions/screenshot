@@ -50,7 +50,7 @@ jobs:
       if: steps.auto-commit.outputs.changes_detected == 'true'
       run: |
         echo "## Generated Screenshot" >> $GITHUB_STEP_SUMMARY
-        echo "![Generated Screenshot](https://github.com/${{ github.repository }}/blob/${{ steps.auto-commit.outputs.commit_hash }}/${{ steps.screenshot.file }}f?raw=true)" >> $GITHUB_STEP_SUMMARY
+        echo "![Generated Screenshot](https://github.com/${{ github.repository }}/blob/${{ steps.auto-commit.outputs.commit_hash }}/${{ steps.screenshot.outputs.file }}?raw=true)" >> $GITHUB_STEP_SUMMARY
 
     - name: No changes
       if: steps.auto-commit.outputs.changes_detected == 'false'
