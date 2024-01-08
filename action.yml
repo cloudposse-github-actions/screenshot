@@ -58,10 +58,9 @@ runs:
       run: |
         mkdir -p node_modules
         # Ensure docker container can write this workspace as an unprivileged user
-        chmod ugoa+rw -R ${{ github.workspace }}
-        
-        echo ${{ inputs.css }} > custom.css
-        echo ${{ inputs.customizations }} > custom.yaml
+        chmod ugoa+rw -R ${{ github.workspace }} 
+        cat <<< "${{ inputs.css }}" > custom.css
+        cat <<< "${{ inputs.customizations }}" > custom.yaml 
 
         # Prepare inputs that should be passed to the docker container.
         cat<<__EOF__>docker.env
