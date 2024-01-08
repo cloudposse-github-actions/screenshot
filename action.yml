@@ -65,7 +65,7 @@ runs:
       with:
         image: ghcr.io/puppeteer/puppeteer:21.3.8
         name: puppeteer-chrome
-        options: '-i --init --cap-add=SYS_ADMIN -v ${{ github.workspace }}:${{ github.workspace }} --workdir=${{ github.workspace }}'
+        options: '-i --init --cap-add=SYS_ADMIN -v ${{ github.workspace }}:${{ github.workspace }}:rw --workdir=${{ github.workspace }}'
         args: |
           bash -c 'npm install && node main.js'
 

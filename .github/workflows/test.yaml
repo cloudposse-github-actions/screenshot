@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Run your action
+    - name: Run this composite action
       id: screenshot
       uses: ./ # Use the path to your action directory
       with:
