@@ -5,6 +5,14 @@ export README_DEPS ?= docs/github-action.md
 
 -include $(shell curl -sSL -o .build-harness "https://cloudposse.tools/build-harness"; echo .build-harness)
 
-## Lint terraform code
-lint:
-	$(SELF) terraform/install terraform/get-modules terraform/get-plugins terraform/lint terraform/validate
+deps:
+	npm install
+
+build:
+	npm run build
+
+bundle:
+	npm run bundle
+
+tests:
+	npm test

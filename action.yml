@@ -1,23 +1,71 @@
 name: 'Example composite GitHub action'
-description: 'Example composite GitHub action'
+description: "Generate a browser screenshot using puppeteer of any URL, including local files. Supports custom CSS overrides and Jquery style rewrites of content."
 author: hello@cloudposse.com
 branding:
-  icon: 'file'
+  icon: 'camera'
   color: 'white'
 inputs:
-  param1:
+  url:
+    description: 'URL of the HTML content to convert to an image. Use file:// for local files'
     required: true
-    description: "Input parameter placeholder"
-    default: "true"
+  css:
+    description: 'Custom CSS overrides'
+    required: false
+  customizations:
+    description: 'String representation of a YAML or JSON map of CSS paths (key) and replacement (value)'
+    required: false
+  output:
+    description: 'Output image file path'
+    required: true
+  outputType:
+    description: 'Output image type'
+    default: png
+  omitBackground:
+    description: 'Omit the browser default background. Enable to support transparency.'
+    default: true
+  canvasWidth:
+    description: 'Canvas width in pixels'
+    required: true
+  canvasHeight:
+    description: 'Canvas height in pixels'
+    required: true
+  imageQuality:
+    description: 'Quality of the output image (1-100, applicable for JPEG)'
+    required: false
+  consoleOutputEnabled:
+    descripion: 'Whether or not to output the browser console log'
+    default: true
+  deviceScaleFactor:
+    description: 'Specifies the device scale factor (pixel ratio) for the web page rendering. It determines how many physical pixels are used to represent a single logical pixel. For example, a device scale factor of 2 means one logical pixel is represented by two physical pixels, commonly used for high-DPI (Retina) displays. A value of 1 uses standard pixel density. This factor affects the resolution and quality of the rendered page or screenshot.'
+    default: '2'
+    required: false
+  fullPage:
+    description: 'Screen capture the entire page by scrolling down'
+    default: false
+  waitForTimeout:
+    description: 'Number of miliseconds to delay before taking screenshot'
+    default: 500
 outputs:
-  result1:
+  screenshot_file:
     description: "Output result placeholder"
     value: "${{ steps.context.outputs.action-result }}"
 runs:
   using: "composite"
   steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    - name: Install dependencies
+      runs: |
+        npm install
+    - name: Run test
+      uses: tj-actions/puppeteer@v5
+      id: puppeteer
+      with:
+        files: |
+          main.js
     - id: context
       shell: bash
       run: |
-          echo "action-result=${{ inputs.param1 }}" >> $GITHUB_OUTPUT
+          echo "file=${{ inputs.output }}" >> $GITHUB_OUTPUT
 

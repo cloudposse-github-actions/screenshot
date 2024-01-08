@@ -5,11 +5,13 @@
 #
 
 # Name of this project
-name: example-github-action-composite
+name: screenshot
 
 # Tags of this project
 tags:
   - github-action
+  - typescript
+  - template
 
 # Logo for this project
 #logo: docs/logo.png
@@ -17,14 +19,20 @@ tags:
 # License of this project
 license: "APACHE2"
 
+# Screenshots
+screenshots:
+  - name: "Demo"
+    description: "<br/>Example of running a screenshot generated from this action."
+    url: "docs/example.png"
+
 # Canonical GitHub repo
-github_repo: cloudposse/example-github-action-composite
+github_repo: cloudposse-github-actions/screenshot
 
 # Badges to display
 badges:
   - name: "Latest Release"
-    image: "https://img.shields.io/github/release/cloudposse/example-github-action-composite.svg"
-    url: "https://github.com/cloudposse/example-github-action-composite/releases/latest"
+    image: "https://img.shields.io/github/release/cloudposse-github-actions/screenshot.svg"
+    url: "https://github.com/cloudposse-github-actions/screenshot/releases/latest"
   - name: "Slack Community"
     image: "https://slack.cloudposse.com/badge.svg"
     url: "https://slack.cloudposse.com"
@@ -32,11 +40,10 @@ badges:
 related: []
 
 # Short description of this project
-description: Template repository of composite GitHub Action
+description: Template repo for GitHub Actions written in TypeScript
 
 introduction: |-
-  This is template repository to create composite GitHub Actions. 
-  Feel free to use it as reference and starting point.
+  This action generates a screenshot of any website (including file://) using Puppeteer.
 
 references:
   - name: "github-actions-workflows"
@@ -47,32 +54,10 @@ references:
     url: "https://github.com/cloudposse/example-github-action-release-workflow"
 
 # How to use this project
-usage: |-
-  ```yaml
-    name: Pull Request
-    on:
-      pull_request:
-        branches: [ 'main' ]
-        types: [opened, synchronize, reopened, closed, labeled, unlabeled]
-
-    jobs:
-      context:
-        runs-on: ubuntu-latest
-        steps:
-          - name: Example action
-            uses: cloudposse/example-github-action-composite@main
-            id: example
-            with:
-              param1: true
-  
-        outputs:
-          result: ${{ steps.example.outputs.result1 }}
-  ```
+usage: |
+  Use this repository as a template in your own GitHub Action project to get started
 
 include:
-  - "docs/github-action.md"
 
 # Contributors to this project
-contributors:
-  - name: "Igor Rodionov"
-    github: "goruha"
+contributors: []
