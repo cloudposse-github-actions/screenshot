@@ -32,9 +32,8 @@ jobs:
           }
         customizations: |
           "#name": "${{ github.event.repository.name }}"        
-        viewportWidth: 800
-        viewportHeight: 600
-        imageQuality: 80
+        viewportWidth: 2000
+        viewportHeight: 800
 
     - uses: stefanzweifel/git-auto-commit-action@v4
       id: auto-commit
