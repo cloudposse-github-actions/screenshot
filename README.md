@@ -108,8 +108,6 @@ jobs:
 
 | Name | Description | Default | Required |
 |------|-------------|---------|----------|
-| canvasHeight | Canvas height in pixels | N/A | true |
-| canvasWidth | Canvas width in pixels | N/A | true |
 | consoleOutputEnabled | consoleOutputEnabled | true | false |
 | css | Custom CSS overrides | N/A | false |
 | customizations | String representation of a YAML or JSON map of CSS paths (key) and replacement (value) | N/A | false |
@@ -117,9 +115,11 @@ jobs:
 | fullPage | Screen capture the entire page by scrolling down | false | false |
 | imageQuality | Quality of the output image (1-100, applicable for JPEG) | N/A | false |
 | omitBackground | Omit the browser default background. Enable to support transparency. | true | false |
-| output | Output image file path | N/A | true |
+| output | Output image file path | screenshot.png | false |
 | outputType | Output image type | png | false |
 | url | URL of the HTML content to convert to an image. Use file:// for local files | N/A | true |
+| viewportHeight | Viewport height in pixels | N/A | true |
+| viewportWidth | Viewport width in pixels | N/A | true |
 | waitForTimeout | Number of miliseconds to delay before taking screenshot | 500 | false |
 
 
@@ -127,7 +127,7 @@ jobs:
 
 | Name | Description |
 |------|-------------|
-| screenshot\_file | Output result placeholder |
+| file | File containing the generated screenshot |
 <!-- markdownlint-restore -->
 
 

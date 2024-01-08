@@ -16,7 +16,8 @@ inputs:
     required: false
   output:
     description: 'Output image file path'
-    required: true
+    required: false
+    default: screenshot.png
   outputType:
     description: 'Output image type'
     default: png
@@ -46,9 +47,9 @@ inputs:
     description: 'Number of miliseconds to delay before taking screenshot'
     default: 500
 outputs:
-  screenshot_file:
-    description: "Output result placeholder"
-    value: "${{ steps.context.outputs.action-result }}"
+  file:
+    description: "File containing the generated screenshot"
+    value: "${{ steps.context.outputs.file }}"
 runs:
   using: "composite"
   steps:
@@ -81,14 +82,14 @@ runs:
         cat docker.env
 
     - name: Run puppeteer to take screenshot
-      id: puppeteer-run
+      id: screenshot
       uses: tj-actions/docker-run@v2
       with:
         image: ghcr.io/puppeteer/puppeteer:21.3.8
         name: puppeteer-chrome
         options: '-i --init --cap-add=SYS_ADMIN -v ${{ github.workspace }}:${{ github.workspace }}:rw --workdir=${{ github.workspace }} --env-file docker.env'
         args: |
-          bash -c 'npm install && node main.js'
+          bash -c 'npm install --no-fund option && node main.js'
 
     - id: context
       shell: bash
