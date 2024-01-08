@@ -52,15 +52,22 @@ outputs:
 runs:
   using: "composite"
   steps:
+
+    - name: Setup permissions
+      shell: bash
+      run: |
+        mkdir -p node_modules
+        # Ensure docker container can write this as an unprivileged user
+        chmod 777 node_modules
     - name: Run puppeteer to take screenshot
       id: puppeteer-run
       uses: tj-actions/docker-run@v2
       with:
         image: ghcr.io/puppeteer/puppeteer:21.3.8
         name: puppeteer-chrome
-        options: '-i --init --cap-add=SYS_ADMIN -v ${{ github.workspace }}:${{ github.workspace }}'
+        options: '-i --init --cap-add=SYS_ADMIN -v ${{ github.workspace }}:${{ github.workspace }} --workdir=${{ github.workspace }}'
         args: |
-          bash -c 'cd ${{ github.workspace }} && mkdir node_modules && chmod 777 node_modules && npm install && node main.js'  
+          bash -c 'npm install && node main.js'
 
     - id: context
       shell: bash
