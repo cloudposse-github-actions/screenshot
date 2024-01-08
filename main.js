@@ -3,6 +3,8 @@ const fs = require('fs').promises; // Import the fs module
 const fsSync = require('fs');
 const yaml = require('js-yaml');
 
+const GITHUB_WORKSPACE = process.env.GITHUB_WORKSPACE;
+
 async function readYamlFile(filePath) {
   try {
     // Asynchronously read the YAML file
@@ -41,7 +43,7 @@ async function readYamlFile(filePath) {
     .on('requestfailed', request =>
       console.log(magenta(`${request.failure().errorText} ${request.url()}`)))
 
-  await page.goto('file:///Users/erik/Dev/cloudposse/html-to-image/test/banner/index.html', {
+  await page.goto('file://' + GITHUB_WORKSPACE + '/test/html/index.html', {
     waitUntil: 'networkidle2',
   });
   await page.waitForTimeout(500);
