@@ -18,6 +18,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Run this composite action
       id: screenshot
       uses: ./ # Use the path to your action directory
@@ -36,6 +37,7 @@ jobs:
         viewportHeight: 800
 
     - uses: stefanzweifel/git-auto-commit-action@v4
+      name: Commit artifact
       id: auto-commit
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -46,7 +48,7 @@ jobs:
         commit_author: screenshot-action 📼 <actions@github.com>
         file_pattern: 'docs/*.png'
 
-    - name: Add Image to Job Summary
+    - name: Add Image to Step Summary
       if: steps.auto-commit.outputs.changes_detected == 'true'
       run: |
         echo "## Generated Screenshot" >> $GITHUB_STEP_SUMMARY
