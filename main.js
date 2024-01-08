@@ -14,6 +14,7 @@ const INPUT_URL = process.env.INPUT_URL || 'file://' + GITHUB_WORKSPACE + '/test
 const INPUT_WAIT_FOR_TIMEOUT = process.env.INPUT_WAIT_FOR_TIMEOUT || 500;
 const INPUT_FULL_PAGE = process.env.INPUT_FULL_PAGE || false;
 const INPUT_OMIT_BACKGROUND = process.env.INPUT_OMIT_BACKGROUND || true;
+const INPUT_CONSOLE_OUTPUT_ENABLED = process.env.INPUT_CONSOLE_OUTPUT_ENABLED || true;
 
 async function readYamlFile(filePath) {
   try {
@@ -34,24 +35,27 @@ async function readYamlFile(filePath) {
   const page = await browser.newPage();
   await page.setViewport({ width: INPUT_VIEWPORT_WIDTH, height: INPUT_VIEWPORT_HEIGHT, deviceScaleFactor: INPUT_DEVICE_SCALE_FACTOR });
 
-  const { blue, cyan, green, magenta, red, yellow } = require('colorette')
-  page
-    .on('console', message => {
-      const type = message.type().substr(0, 3).toUpperCase()
-      const colors = {
-        LOG: text => text,
-        ERR: red,
-        WAR: yellow,
-        INF: cyan
-      }
-      const color = colors[type] || blue
-      console.log(color(`${type} ${message.text()}`))
-    })
-    .on('pageerror', ({ message }) => console.log(red(message)))
-    .on('response', response =>
-      console.log(green(`${response.status()} ${response.url()}`)))
-    .on('requestfailed', request =>
-      console.log(magenta(`${request.failure().errorText} ${request.url()}`)))
+  if (INPUT_CONSOLE_OUTPUT_ENABLED) {
+    const { blue, cyan, green, magenta, red, yellow } = require('colorette')
+    page
+      .on('console', message => {
+        const type = message.type().substr(0, 3).toUpperCase()
+        const colors = {
+          LOG: text => text,
+          ERR: red,
+          WAR: yellow,
+          INF: cyan
+        }
+        const color = colors[type] || blue
+        console.log(color(`${type} ${message.text()}`))
+      })
+      .on('pageerror', ({ message }) => console.log(red(message)))
+      .on('response', response =>
+        console.log(green(`${response.status()} ${response.url()}`)))
+      .on('requestfailed', request =>
+        console.log(magenta(`${request.failure().errorText} ${request.url()}`)))
+  }
+
   console.log('Navigating to ' + INPUT_URL);
   await page.goto(INPUT_URL, {
     waitUntil: 'networkidle2',
