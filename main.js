@@ -4,6 +4,7 @@ const fsSync = require('fs');
 const yaml = require('js-yaml');
 
 const GITHUB_WORKSPACE = process.env.GITHUB_WORKSPACE;
+const INPUT_OUTPUT = process.env.INPUT_OUTPUT;
 
 async function readYamlFile(filePath) {
   try {
@@ -75,7 +76,7 @@ async function readYamlFile(filePath) {
     await page.waitForTimeout(2000);
   }
 
-  //await page.screenshot({path: 'banner.jpg', 'quality': 100, 'type': 'jpeg', fullPage: false, omitBackground: true});
-  await page.screenshot({path: 'banner.png', 'type': 'png', fullPage: false, omitBackground: true});
+  //await page.screenshot({path: INPUT_OUTPUT, 'quality': 100, 'type': 'jpeg', fullPage: false, omitBackground: true});
+  await page.screenshot({path: INPUT_OUTPUT, 'type': 'png', fullPage: false, omitBackground: true});
   await browser.close();
 })();
