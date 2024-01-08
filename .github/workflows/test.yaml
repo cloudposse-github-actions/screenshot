@@ -17,7 +17,7 @@ jobs:
       contents: write
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Run this composite action
       id: screenshot
       uses: ./ # Use the path to your action directory

@@ -6,15 +6,15 @@ const yaml = require('js-yaml');
 const GITHUB_WORKSPACE = process.env.GITHUB_WORKSPACE || '.';
 const INPUT_OUTPUT = process.env.INPUT_OUTPUT || 'docs/example.png';
 const INPUT_OUTPUT_TYPE = process.env.INPUT_OUTPUT_TYPE || 'png';
-const INPUT_IMAGE_QUALITY = process.env.INPUT_IMAGE_QUALITY || 100;
-const INPUT_DEVICE_SCALE_FACTOR = process.env.INPUT_DEVICE_SCALE_FACTOR || 2;
-const INPUT_VIEWPORT_WIDTH = process.env.INPUT_VIEWPORT_WIDTH || 2000;
-const INPUT_VIEWPORT_HEIGHT = process.env.INPUT_VIEWPORT_HEIGHT || 800;
+const INPUT_IMAGE_QUALITY = parseInt(process.env.INPUT_IMAGE_QUALITY, 10) || 100;
+const INPUT_DEVICE_SCALE_FACTOR = parseInt(process.env.INPUT_DEVICE_SCALE_FACTOR, 10) || 2;
+const INPUT_VIEWPORT_WIDTH = parseInt(process.env.INPUT_VIEWPORT_WIDTH, 10) || 2000;
+const INPUT_VIEWPORT_HEIGHT = parseInt(process.env.INPUT_VIEWPORT_HEIGHT, 10) || 800;
 const INPUT_URL = process.env.INPUT_URL || 'file://' + GITHUB_WORKSPACE + '/test/html/index.html';
-const INPUT_WAIT_FOR_TIMEOUT = process.env.INPUT_WAIT_FOR_TIMEOUT || 500;
-const INPUT_FULL_PAGE = process.env.INPUT_FULL_PAGE || false;
-const INPUT_OMIT_BACKGROUND = process.env.INPUT_OMIT_BACKGROUND || true;
-const INPUT_CONSOLE_OUTPUT_ENABLED = process.env.INPUT_CONSOLE_OUTPUT_ENABLED || true;
+const INPUT_WAIT_FOR_TIMEOUT = parseInt(process.env.INPUT_WAIT_FOR_TIMEOUT, 10) || 500;
+const INPUT_FULL_PAGE = process.env.INPUT_FULL_PAGE == 'true';
+const INPUT_OMIT_BACKGROUND = process.env.INPUT_OMIT_BACKGROUND == 'true';
+const INPUT_CONSOLE_OUTPUT_ENABLED = process.env.INPUT_CONSOLE_OUTPUT_ENABLED == 'true';
 
 async function readYamlFile(filePath) {
   try {
