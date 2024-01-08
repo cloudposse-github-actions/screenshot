@@ -55,5 +55,4 @@ jobs:
     - name: No changes
       if: steps.auto-commit.outputs.changes_detected == 'false'
       run: |
-        echo "No changes to demo" >> $GITHUB_STEP_SUMMARY
-
+        echo "No changes to screenshot" >> $GITHUB_STEP_SUMMARY
