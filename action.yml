@@ -63,8 +63,8 @@ runs:
         chmod ugoa+rw -R ${{ github.workspace }} 
 
         # Write out customizations
-        cat <<< "${{ inputs.css }}" > custom.css
-        cat <<< "${{ inputs.customizations }}" > custom.yaml 
+        cat <<< "${{ inputs.css }}" | tee -i custom.css
+        cat <<< "${{ inputs.customizations }}" | tee -i custom.yaml 
 
         # Prepare inputs that should be passed to the docker container.
         cat<<__EOF__>docker.env
