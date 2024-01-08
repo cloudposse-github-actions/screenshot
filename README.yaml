@@ -90,6 +90,7 @@ usage: |
 
 
 include:
+- docs/github-action.md
 
 # Contributors to this project
 contributors: []
