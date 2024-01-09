@@ -91,7 +91,7 @@ runs:
         cat docker.env
 
         # Avoid duplicate mount points
-        if [ "${{ github.workspace }}" == "${{ github.action_path }}" ]; then
+        if [ "$(realpath ${{ github.workspace }})" == "$(realpath ${{ github.action_path }})" ]; then
           echo "DOCKER_VOLUMES=-v ${{ github.workspace }}:${{ github.workspace }}:rw" >> "$GITHUB_ENV"
         else
           echo "DOCKER_VOLUMES=-v ${{ github.workspace }}:${{ github.workspace }}:rw -v ${{ github.action_path }}:${{ github.action_path }}:rw" >> "$GITHUB_ENV" 
