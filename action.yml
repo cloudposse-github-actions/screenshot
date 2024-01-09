@@ -77,7 +77,7 @@ runs:
         ACTION_PATH=${{ github.action_path }}
         INPUT_OUTPUT_TYPE=${{ inputs.outputType }}
         INPUT_URL=${{ inputs.url }}
-        INPUT_OUTPUT=${{ inputs.output }}
+        INPUT_OUTPUT=${{ github.workspace }}/${{ inputs.output }}
         INPUT_OUTPUT_TYPE=${{ inputs.outputType }}
         INPUT_OMIT_BACKGROUND=${{ inputs.omitBackground }}
         INPUT_VIEWPORT_WIDTH=${{ inputs.viewportWidth }}
