@@ -96,8 +96,7 @@ runs:
       with:
         image: ghcr.io/puppeteer/puppeteer:21.3.8
         name: puppeteer-chrome
-        options: |
-          -i --init --cap-add=SYS_ADMIN -v ${{ github.workspace }}:${{ github.workspace }}:rw -v ${{github.action_path}}:${{github.action_path}}:rw --workdir=${{github.action_path}} --env-file docker.env
+        options: '-i --init --cap-add=SYS_ADMIN -v ${{ github.workspace }}:${{ github.workspace }}:rw -v ${{github.action_path}}:${{github.action_path}}:rw --workdir=${{github.action_path}} --env-file docker.env'
         args: |
           bash -c 'npm install --no-fund option && node main.js'
 
