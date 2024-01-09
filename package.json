@@ -1,6 +1,6 @@
 {
 
-  "name": "html-to-image",
+  "name": "screenshot",
 
   "version": "0.0.0",
 
@@ -22,17 +22,17 @@
 
     "type": "git",
 
-    "url": "git+https://github.com/cloudposse-github-actions/html-to-image.git"
+    "url": "git+https://github.com/cloudposse-github-actions/screenshot.git"
 
   },
 
   "bugs": {
 
-    "url": "https://github.com/cloudposse-github-actions/html-to-image/issues"
+    "url": "https://github.com/cloudposse-github-actions/screenshot/issues"
 
   },
 
-  "homepage": "https://github.com/cloudposse-github-actions/html-to-image#readme",
+  "homepage": "https://github.com/cloudposse-github-actions/screenshot#readme",
 
   "keywords": [
 
