@@ -17,35 +17,35 @@ inputs:
   output:
     description: 'Output image file path'
     required: false
-    default: screenshot.png
+    default: 'screenshot.png'
   outputType:
     description: 'Output image type'
-    default: png
+    default: 'png'
   omitBackground:
     description: 'Omit the browser default background. Enable to support transparency.'
-    default: true
+    default: 'true'
   viewportWidth:
     description: 'Viewport width in pixels'
-    required: true
+    required: 'true'
   viewportHeight:
     description: 'Viewport height in pixels'
-    required: true
+    required: 'true'
   imageQuality:
     description: 'Quality of the output image (1-100, applicable for JPEG)'
     required: false
   consoleOutputEnabled:
     descripion: 'Whether or not to output the browser console log'
-    default: true
+    default: 'true'
   deviceScaleFactor:
     description: 'Specifies the device scale factor (pixel ratio) for the web page rendering. It determines how many physical pixels are used to represent a single logical pixel. For example, a device scale factor of 2 means one logical pixel is represented by two physical pixels, commonly used for high-DPI (Retina) displays. A value of 1 uses standard pixel density. This factor affects the resolution and quality of the rendered page or screenshot.'
     default: '2'
     required: false
   fullPage:
     description: 'Screen capture the entire page by scrolling down'
-    default: false
+    default: 'false'
   waitForTimeout:
     description: 'Number of miliseconds to delay before taking screenshot'
-    default: 500
+    default: '500'
 outputs:
   file:
     description: "File containing the generated screenshot"
