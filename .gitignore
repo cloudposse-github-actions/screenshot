@@ -1,2 +1,6 @@
 .build-harness
 build-harness
+
+node_modules
+
+.DS_Store

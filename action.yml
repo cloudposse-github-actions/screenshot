@@ -1,23 +1,114 @@
 name: 'Example composite GitHub action'
-description: 'Example composite GitHub action'
+description: "Generate a browser screenshot using puppeteer of any URL, including local files. Supports custom CSS overrides and Jquery style rewrites of content."
 author: hello@cloudposse.com
 branding:
-  icon: 'file'
+  icon: 'camera'
   color: 'white'
 inputs:
-  param1:
+  url:
+    description: 'URL of the HTML content to convert to an image. Use file:// for local files'
     required: true
-    description: "Input parameter placeholder"
-    default: "true"
+  css:
+    description: 'Custom CSS overrides'
+    required: false
+  customizations:
+    description: 'String representation of a YAML or JSON map of CSS paths (key) and replacement (value)'
+    required: false
+  output:
+    description: 'Output image file path'
+    required: false
+    default: screenshot.png
+  outputType:
+    description: 'Output image type'
+    default: png
+  omitBackground:
+    description: 'Omit the browser default background. Enable to support transparency.'
+    default: true
+  viewportWidth:
+    description: 'Viewport width in pixels'
+    required: true
+  viewportHeight:
+    description: 'Viewport height in pixels'
+    required: true
+  imageQuality:
+    description: 'Quality of the output image (1-100, applicable for JPEG)'
+    required: false
+  consoleOutputEnabled:
+    descripion: 'Whether or not to output the browser console log'
+    default: true
+  deviceScaleFactor:
+    description: 'Specifies the device scale factor (pixel ratio) for the web page rendering. It determines how many physical pixels are used to represent a single logical pixel. For example, a device scale factor of 2 means one logical pixel is represented by two physical pixels, commonly used for high-DPI (Retina) displays. A value of 1 uses standard pixel density. This factor affects the resolution and quality of the rendered page or screenshot.'
+    default: '2'
+    required: false
+  fullPage:
+    description: 'Screen capture the entire page by scrolling down'
+    default: false
+  waitForTimeout:
+    description: 'Number of miliseconds to delay before taking screenshot'
+    default: 500
 outputs:
-  result1:
-    description: "Output result placeholder"
-    value: "${{ steps.context.outputs.action-result }}"
+  file:
+    description: "File containing the generated screenshot"
+    value: "${{ steps.context.outputs.file }}"
 runs:
   using: "composite"
   steps:
+
+    - name: Setup environment
+      shell: bash
+      run: |
+        mkdir -p ${{github.action_path}}/node_modules
+
+        # Ensure docker container can write this workspace as an unprivileged user
+        chmod ugoa+rw -R ${{ github.workspace }} ${{github.action_path}}
+
+        # Write out customizations
+        cat <<__EOF__ | tee -i ${{github.action_path}}/custom.css
+        ${{ inputs.css }}
+        __EOF__
+
+        cat <<__EOF__ | tee -i ${{github.action_path}}/custom.yaml
+        ${{ inputs.customizations }}
+        __EOF__
+
+        # Prepare inputs that should be passed to the docker container.
+        cat<<__EOF__>docker.env
+        GITHUB_WORKSPACE=${{ github.workspace }}
+        ACTION_PATH=${{ github.action_path }}
+        INPUT_OUTPUT_TYPE=${{ inputs.outputType }}
+        INPUT_URL=${{ inputs.url }}
+        INPUT_OUTPUT=${{ github.workspace }}/${{ inputs.output }}
+        INPUT_OUTPUT_TYPE=${{ inputs.outputType }}
+        INPUT_OMIT_BACKGROUND=${{ inputs.omitBackground }}
+        INPUT_VIEWPORT_WIDTH=${{ inputs.viewportWidth }}
+        INPUT_VIEWPORT_HEIGHT=${{ inputs.viewportHeight }}
+        INPUT_IMAGE_QUALITY=${{ inputs.imageQuality }}
+        INPUT_CONSOLE_OUTPUT_ENABLED=${{ inputs.consoleOutputEnabled }}
+        INPUT_DEVICE_SCALE_FACTOR=${{ inputs.deviceScaleFactor }}
+        INPUT_FULL_PAGE=${{ inputs.fullPage }}
+        INPUT_WAIT_FOR_TIMEOUT=${{ inputs.waitForTimeout }}
+        __EOF__
+        cat docker.env
+
+        # Avoid duplicate mount points
+        if [ "$(realpath ${{ github.workspace }})" == "$(realpath ${{ github.action_path }})" ]; then
+          echo "DOCKER_VOLUMES=-v ${{ github.workspace }}:${{ github.workspace }}:rw" >> "$GITHUB_ENV"
+        else
+          echo "DOCKER_VOLUMES=-v ${{ github.workspace }}:${{ github.workspace }}:rw -v ${{ github.action_path }}:${{ github.action_path }}:rw" >> "$GITHUB_ENV" 
+        fi
+
+    - name: Run puppeteer to take screenshot
+      id: screenshot
+      uses: tj-actions/docker-run@v2
+      with:
+        image: ghcr.io/puppeteer/puppeteer:21.3.8
+        name: puppeteer-chrome
+        options: '-i --init --cap-add=SYS_ADMIN ${{ env.DOCKER_VOLUMES }} --workdir=${{github.action_path}} --env-file docker.env'
+        args: |
+          bash -c 'npm install --no-fund option && node main.js'
+
     - id: context
       shell: bash
       run: |
-          echo "action-result=${{ inputs.param1 }}" >> $GITHUB_OUTPUT
+          echo "file=${{ inputs.output }}" >> $GITHUB_OUTPUT
 
