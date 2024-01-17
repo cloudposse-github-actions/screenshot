@@ -57,7 +57,11 @@ runs:
     - name: Setup environment
       shell: bash
       run: |
+        # Ensure node_modules folder will have correct permissions
         mkdir -p ${{github.action_path}}/node_modules
+
+        # Ensure parent directory containing output file exists
+        mkdir -p $(dirname "${{ github.workspace }}/${{ inputs.output }}")
 
         # Ensure docker container can write this workspace as an unprivileged user
         chmod ugoa+rw -R ${{ github.workspace }} ${{github.action_path}}
@@ -70,9 +74,6 @@ runs:
         cat <<__EOF__ | tee -i ${{github.action_path}}/custom.yaml
         ${{ inputs.customizations }}
         __EOF__
-
-        # Ensure parent directory of output file exists
-        mkdir -p $(dirname "${{ github.workspace }}/${{ inputs.output }}")
 
         # Prepare inputs that should be passed to the docker container.
         cat<<__EOF__>docker.env
