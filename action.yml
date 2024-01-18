@@ -46,6 +46,9 @@ inputs:
   waitForTimeout:
     description: 'Number of miliseconds to delay before taking screenshot'
     default: 500
+  puppeteerImage:
+    description: 'Docker image to run puppeteer. See https://github.com/puppeteer/puppeteer/pkgs/container/puppeteer'
+    default: 'ghcr.io/puppeteer/puppeteer:21.7.0'
 outputs:
   file:
     description: "File containing the generated screenshot"
@@ -106,7 +109,7 @@ runs:
       id: screenshot
       uses: tj-actions/docker-run@v2
       with:
-        image: ghcr.io/puppeteer/puppeteer:21.3.8
+        image: ${{ inputs.puppeteerImage }}
         name: puppeteer-chrome
         options: '-i --init --cap-add=SYS_ADMIN ${{ env.DOCKER_VOLUMES }} --workdir=${{github.action_path}} --env-file docker.env'
         args: |
