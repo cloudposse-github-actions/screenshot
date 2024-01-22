@@ -26,13 +26,13 @@ inputs:
     default: 'true'
   viewportWidth:
     description: 'Viewport width in pixels'
-    required: 'true'
+    required: true
   viewportHeight:
     description: 'Viewport height in pixels'
-    required: 'true'
+    required: true
   imageQuality:
     description: 'Quality of the output image (1-100, applicable for JPEG)'
-    required: 'false'
+    required: false
   consoleOutputEnabled:
     descripion: 'Whether or not to output the browser console log'
     default: 'true'
