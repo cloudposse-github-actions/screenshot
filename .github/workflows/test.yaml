@@ -32,7 +32,7 @@ jobs:
             background: linear-gradient(139deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 56%, rgba(147,0,255,1) 100%);
           }
         customizations: |
-          "#name": "${{ github.event.repository.name }}"        
+          "#name": "${{ github.event.repository.name }} 📷"
         viewportWidth: 2000
         viewportHeight: 800
 
@@ -43,9 +43,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         commit_message: "chore: update example image"
-        commit_user_name: screenshot-action 📼
+        commit_user_name: screenshot-action 📷
         commit_user_email: actions@github.com
-        commit_author: screenshot-action 📼 <actions@github.com>
+        commit_author: screenshot-action 📷 <actions@github.com>
         file_pattern: 'docs/*.png'
 
     - name: Add Image to Step Summary
