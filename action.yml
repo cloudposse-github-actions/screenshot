@@ -119,6 +119,7 @@ runs:
         password: ${{ inputs.token }}
 
     - name: Docker pull
+      shell: bash
       run: |
         docker pull ${{ inputs.puppeteerImage }}
 
