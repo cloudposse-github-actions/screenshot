@@ -29,10 +29,10 @@ jobs:
     - name: Docker Pull
       run: |
           docker pull ${{ steps.build.outputs.image }}:${{ steps.build.outputs.tag}} 
-          
+
     - name: Job Summary
       run: |
         echo "## Docker Image Summary" >> $GITHUB_STEP_SUMMARY
         echo '```json' >> $GITHUB_STEP_SUMMARY
         docker inspect ${{ steps.build.outputs.image }}:${{ steps.build.outputs.tag}}  >> $GITHUB_STEP_SUMMARY
-        echo '```'' >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
