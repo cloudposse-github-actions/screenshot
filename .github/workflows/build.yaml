@@ -8,7 +8,7 @@ on:
         types: [opened, synchronize, reopened]
 
 jobs:
-  build_and_push:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,3 +26,9 @@ jobs:
         password: "${{ secrets.GITHUB_TOKEN }}"
         platforms: linux/amd64,linux/arm64
 
+    - name: Job Summary
+      run:
+        echo "## Docker Image Summary" >> $GITHUB_STEP_SUMMARY
+        echo '```json' >> $GITHUB_STEP_SUMMARY
+        docker inspect ${{ steps.build.outputs.image }}:${{ steps.build.outputs.tag}}  >> $GITHUB_STEP_SUMMARY
+        echo '```'' >> $GITHUB_STEP_SUMMARY
