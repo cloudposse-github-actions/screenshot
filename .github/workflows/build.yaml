@@ -26,20 +26,13 @@ jobs:
         password: "${{ secrets.GITHUB_TOKEN }}"
         platforms: linux/amd64,linux/arm64
 
-    - name: Docker Pull
+    - name: Verify Image
       run: |
           docker pull ${{ steps.build.outputs.image }}:${{ steps.build.outputs.tag}} 
-
-    - name: Docker Image Summary
-      run: |
-        docker inspect ${{ steps.build.outputs.image }}:${{ steps.build.outputs.tag}} > image.json
-
-    - name: Convert JSON to HTML Table
-      uses: Teebra/JSON-to-HTML-table@v2.0.0
-      with:
-        json-file: ./image.json
 
     - name: Job Summary
       run: |
         echo "## Docker Image Summary" >> $GITHUB_STEP_SUMMARY
-        cat output.html >> $GITHUB_STEP_SUMMARY
+        echo '```json' >> $GITHUB_STEP_SUMMARY
+        docker inspect ${{ steps.build.outputs.image }}:${{ steps.build.outputs.tag}}  >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
