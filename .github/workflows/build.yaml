@@ -1,0 +1,28 @@
+name: Build and Push Docker Image
+
+on:
+    push:
+        branches:
+        - main
+    pull_request:
+        types: [opened, synchronize, reopened]
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Build
+      id: build
+      uses: cloudposse/github-action-docker-build-push@main
+      with:
+        registry: ghcr.io
+        organization: "${{ github.event.repository.owner.login }}"
+        repository: "${{ github.event.repository.name }}"
+        login: "${{ github.actor }}"
+        password: "{{ secrets.GITHUB_TOKEN }}"
+        platforms: linux/amd64,linux/arm64
+
