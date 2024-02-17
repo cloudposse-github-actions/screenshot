@@ -30,7 +30,6 @@ jobs:
       run: |
           docker pull ${{ steps.build.outputs.image }}:${{ steps.build.outputs.tag}} 
 
-
     - name: Docker Image Summary
       run: |
         docker inspect ${{ steps.build.outputs.image }}:${{ steps.build.outputs.tag}} > image.json
