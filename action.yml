@@ -48,7 +48,7 @@ inputs:
     default: 500
   puppeteerImage:
     description: 'Docker image to run puppeteer. See https://github.com/puppeteer/puppeteer/pkgs/container/puppeteer'
-    default: 'ghcr.io/puppeteer/puppeteer:21.7.0'
+    default: 'ghcr.io/cloudposse-github-actions/screenshot:sha-96d4bb7b2139a52679f7d473575c4b1f02f4d56f'
 outputs:
   file:
     description: "File containing the generated screenshot"
