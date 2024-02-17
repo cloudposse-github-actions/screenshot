@@ -1,5 +1,6 @@
 FROM ghcr.io/puppeteer/puppeteer:21.7.0
-
+LABEL org.opencontainers.image.source="https://github.com/cloudposse-github-actions/screenshot"
+                                                  
 USER root
 
 RUN apt-get update && apt-get install -y pdf2svg
