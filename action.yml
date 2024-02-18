@@ -1,4 +1,4 @@
-name: 'Example composite GitHub action'
+name: 'Screenshot'
 description: "Generate a browser screenshot using puppeteer of any URL, including local files. Supports custom CSS overrides and Jquery style rewrites of content."
 author: hello@cloudposse.com
 branding:
