@@ -1,5 +1,4 @@
 FROM ghcr.io/puppeteer/puppeteer:21.7.0
-LABEL org.opencontainers.image.source="https://github.com/cloudposse-github-actions/screenshot"
                                                   
 USER root
 
@@ -25,4 +24,3 @@ RUN wget https://github.com/13rac1/twemoji-color-font/releases/download/v${TWITT
 # Rebuild the font cache
 RUN fc-cache -f -v && \
     fc-list | grep -i emoji
-
