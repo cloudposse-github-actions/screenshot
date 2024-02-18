@@ -4,7 +4,7 @@
 
 | Name | Description | Default | Required |
 |------|-------------|---------|----------|
-| consoleOutputEnabled | consoleOutputEnabled | true | false |
+| consoleOutputEnabled | Whether or not to output the browser console log | true | false |
 | css | Custom CSS overrides | N/A | false |
 | customizations | String representation of a YAML or JSON map of CSS paths (key) and replacement (value) | N/A | false |
 | deviceScaleFactor | Specifies the device scale factor (pixel ratio) for the web page rendering. It determines how many physical pixels are used to represent a single logical pixel. For example, a device scale factor of 2 means one logical pixel is represented by two physical pixels, commonly used for high-DPI (Retina) displays. A value of 1 uses standard pixel density. This factor affects the resolution and quality of the rendered page or screenshot. | 2 | false |
