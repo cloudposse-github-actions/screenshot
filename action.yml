@@ -48,7 +48,7 @@ inputs:
     default: 500
   puppeteerImage:
     description: 'Docker image to run puppeteer. See https://github.com/puppeteer/puppeteer/pkgs/container/puppeteer'
-    default: 'ghcr.io/cloudposse-github-actions/screenshot:sha-df4163b429c53d4cd2f1a3c7bb71a2923227ea91'
+    default: 'ghcr.io/cloudposse-github-actions/screenshot:sha-65d10e40b3507a6d752bd0be8a9647f681b46f75'
   token:
     description: 'A GitHub token'
     required: false
