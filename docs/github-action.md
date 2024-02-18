@@ -18,7 +18,7 @@
 | url | URL of the HTML content to convert to an image. Use file:// for local files | N/A | true |
 | viewportHeight | Viewport height in pixels | N/A | true |
 | viewportWidth | Viewport width in pixels | N/A | true |
-| waitForTimeout | Number of miliseconds to delay before taking screenshot | 500 | false |
+| waitForTimeout | Number of milliseconds to delay before taking screenshot | 500 | false |
 
 
 ## Outputs

@@ -44,7 +44,7 @@ inputs:
     description: 'Screen capture the entire page by scrolling down'
     default: 'false'
   waitForTimeout:
-    description: 'Number of miliseconds to delay before taking screenshot'
+    description: 'Number of milliseconds to delay before taking screenshot'
     default: '500'
   puppeteerImage:
     description: 'Docker image to run puppeteer. See https://github.com/puppeteer/puppeteer/pkgs/container/puppeteer'
