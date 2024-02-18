@@ -24,3 +24,5 @@ RUN wget https://github.com/13rac1/twemoji-color-font/releases/download/v${TWITT
 # Rebuild the font cache
 RUN fc-cache -f -v && \
     fc-list | grep -i emoji
+
+USER pptruser
