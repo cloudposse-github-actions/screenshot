@@ -116,9 +116,9 @@ async function convertPdfToSvg(inputFile, outputFile) {
     convertPdfToSvg(pdfFile, INPUT_OUTPUT);
   } else if (INPUT_OUTPUT_TYPE == "pdf") {
       const pdfFile = await page.pdf({path: INPUT_OUTPUT, width: INPUT_VIEWPORT_WIDTH + 'px', height: INPUT_VIEWPORT_HEIGHT + 'px', printBackground: !INPUT_OMIT_BACKGROUND});
-  } else if (INPUT_OUTPUT_TYPE == "jpeg") {
+  } else if (INPUT_OUTPUT_TYPE == "jpeg" || INPUT_OUTPUT_TYPE == "jpg") {
     // Quality parameter is only valid for JPEG images
-    await page.screenshot({path: INPUT_OUTPUT, 'quality': INPUT_IMAGE_QUALITY, 'type': INPUT_OUTPUT_TYPE, fullPage: INPUT_FULL_PAGE, omitBackground: INPUT_OMIT_BACKGROUND});
+    await page.screenshot({path: INPUT_OUTPUT, 'quality': INPUT_IMAGE_QUALITY, 'type': 'jpeg', fullPage: INPUT_FULL_PAGE, omitBackground: INPUT_OMIT_BACKGROUND});
   } else {
     await page.screenshot({path: INPUT_OUTPUT, 'type': INPUT_OUTPUT_TYPE, fullPage: INPUT_FULL_PAGE, omitBackground: INPUT_OMIT_BACKGROUND});
   }
