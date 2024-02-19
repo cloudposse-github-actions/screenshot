@@ -3,6 +3,8 @@ const path = require('path');
 const fs = require('fs').promises; // Import the fs module
 const fsSync = require('fs');
 const yaml = require('js-yaml');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
 const GITHUB_WORKSPACE = process.env.GITHUB_WORKSPACE || '.';
 const INPUT_OUTPUT = process.env.INPUT_OUTPUT || 'docs/example.png';
