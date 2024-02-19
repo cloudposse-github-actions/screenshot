@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs').promises; // Import the fs module
+const path = require('path');
 const fsSync = require('fs');
 const yaml = require('js-yaml');
 
@@ -40,8 +41,6 @@ async function convertPdfToSvg(inputFile, outputFile) {
     console.error('exec error:', error);
   }
 }
-
-
 
 (async () => {
   const browser = await puppeteer.launch({headless: 'new', dumpio: false});
@@ -102,8 +101,8 @@ async function convertPdfToSvg(inputFile, outputFile) {
     }, elementPaths);
   
     await page.waitForTimeout(2000);
-  
   }
+  
   if (INPUT_OUTPUT_TYPE == "svg") {
     const baseExt = path.extname(INPUT_OUTPUT);
     const baseName = path.basename(INPUT_OUTPUT, baseExt);
