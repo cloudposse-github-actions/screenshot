@@ -29,6 +29,19 @@ async function readYamlFile(filePath) {
   }
 }
 
+async function convertPdfToSvg(inputFile, outputFile) {
+  try {
+    const { stdout, stderr } = await exec(`pdf2svg ${inputFile} ${outputFile}`);
+    if(stdout)
+      console.log('stdout:', stdout);
+    if(stderr)
+      console.error('stderr:', stderr);
+  } catch (error) {
+    console.error('exec error:', error);
+  }
+}
+
+
 
 (async () => {
   const browser = await puppeteer.launch({headless: 'new', dumpio: false});
@@ -91,7 +104,17 @@ async function readYamlFile(filePath) {
     await page.waitForTimeout(2000);
   
   }
-  if (INPUT_OUTPUT_TYPE == "jpeg") {
+  if (INPUT_OUTPUT_TYPE == "svg") {
+    const baseExt = path.extname(INPUT_OUTPUT);
+    const baseName = path.basename(INPUT_OUTPUT, baseExt);
+    const outputPdfFile = `${baseName}.pdf`;
+    // First generate a PDF
+    await page.screenshot({path: outputPdfFile, 'type': 'pdf', fullPage: INPUT_FULL_PAGE, omitBackground: INPUT_OMIT_BACKGROUND});
+
+    // Then convert the PDF to SVG
+    convertPdfToSvg(outputPdfFile, INPUT_OUTPUT);
+
+  } elseif (INPUT_OUTPUT_TYPE == "jpeg") {
     // Quality parameter is only valid for JPEG images
     await page.screenshot({path: INPUT_OUTPUT, 'quality': INPUT_IMAGE_QUALITY, 'type': INPUT_OUTPUT_TYPE, fullPage: INPUT_FULL_PAGE, omitBackground: INPUT_OMIT_BACKGROUND});
   } else {
