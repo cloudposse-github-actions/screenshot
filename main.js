@@ -1,7 +1,10 @@
 const puppeteer = require('puppeteer');
+const path = require('path');
 const fs = require('fs').promises; // Import the fs module
 const fsSync = require('fs');
 const yaml = require('js-yaml');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
 const GITHUB_WORKSPACE = process.env.GITHUB_WORKSPACE || '.';
 const INPUT_OUTPUT = process.env.INPUT_OUTPUT || 'docs/example.png';
@@ -29,6 +32,17 @@ async function readYamlFile(filePath) {
   }
 }
 
+async function convertPdfToSvg(inputFile, outputFile) {
+  try {
+    const { stdout, stderr } = await exec(`pdf2svg ${inputFile} ${outputFile}`);
+    if(stdout)
+      console.log('stdout:', stdout);
+    if(stderr)
+      console.error('stderr:', stderr);
+  } catch (error) {
+    console.error('exec error:', error);
+  }
+}
 
 (async () => {
   const browser = await puppeteer.launch({headless: 'new', dumpio: false});
@@ -89,11 +103,22 @@ async function readYamlFile(filePath) {
     }, elementPaths);
   
     await page.waitForTimeout(2000);
-  
   }
-  if (INPUT_OUTPUT_TYPE == "jpeg") {
+
+  if (INPUT_OUTPUT_TYPE == "svg") {
+    const baseExt = path.extname(INPUT_OUTPUT);
+    const baseName = path.basename(INPUT_OUTPUT, baseExt);
+    const pdfFile = `${baseName}.pdf`;
+    // First generate a PDF
+    await page.pdf({path: pdfFile, width: INPUT_VIEWPORT_WIDTH + 'px', height: INPUT_VIEWPORT_HEIGHT + 'px', printBackground: !INPUT_OMIT_BACKGROUND});
+
+    // Then convert the PDF to SVG
+    convertPdfToSvg(pdfFile, INPUT_OUTPUT);
+  } else if (INPUT_OUTPUT_TYPE == "pdf") {
+      const pdfFile = await page.pdf({path: INPUT_OUTPUT, width: INPUT_VIEWPORT_WIDTH + 'px', height: INPUT_VIEWPORT_HEIGHT + 'px', printBackground: !INPUT_OMIT_BACKGROUND});
+  } else if (INPUT_OUTPUT_TYPE == "jpeg" || INPUT_OUTPUT_TYPE == "jpg") {
     // Quality parameter is only valid for JPEG images
-    await page.screenshot({path: INPUT_OUTPUT, 'quality': INPUT_IMAGE_QUALITY, 'type': INPUT_OUTPUT_TYPE, fullPage: INPUT_FULL_PAGE, omitBackground: INPUT_OMIT_BACKGROUND});
+    await page.screenshot({path: INPUT_OUTPUT, 'quality': INPUT_IMAGE_QUALITY, 'type': 'jpeg', fullPage: INPUT_FULL_PAGE, omitBackground: INPUT_OMIT_BACKGROUND});
   } else {
     await page.screenshot({path: INPUT_OUTPUT, 'type': INPUT_OUTPUT_TYPE, fullPage: INPUT_FULL_PAGE, omitBackground: INPUT_OMIT_BACKGROUND});
   }

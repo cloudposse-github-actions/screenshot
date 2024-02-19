@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+permissions:
+  contents: write
+  packages: read
+
 jobs:
   screenshot:
     runs-on: ubuntu-latest
@@ -17,7 +21,7 @@ jobs:
       contents: write
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Run this composite action
       id: screenshot
@@ -35,8 +39,9 @@ jobs:
           "#name": "${{ github.event.repository.name }} 📷"
         viewportWidth: 2000
         viewportHeight: 800
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-    - uses: stefanzweifel/git-auto-commit-action@v4
+    - uses: stefanzweifel/git-auto-commit-action@v5
       name: Commit artifact
       id: auto-commit
       env:
