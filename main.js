@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const path = require('path');
 const fs = require('fs').promises; // Import the fs module
 const fsSync = require('fs');
 const yaml = require('js-yaml');
@@ -103,11 +104,16 @@ async function convertPdfToSvg(inputFile, outputFile) {
   }
 
   if (INPUT_OUTPUT_TYPE == "svg") {
+    const baseExt = path.extname(INPUT_OUTPUT);
+    const baseName = path.basename(INPUT_OUTPUT, baseExt);
+    const pdfFile = `${baseName}.pdf`;
     // First generate a PDF
-    const pdfFile = await page.pdf({width: INPUT_VIEWPORT_WIDTH + 'px', height: INPUT_VIEWPORT_HEIGHT + 'px', printBackground: !INPUT_OMIT_BACKGROUND});
+    await page.pdf({path: pdfFile, width: INPUT_VIEWPORT_WIDTH + 'px', height: INPUT_VIEWPORT_HEIGHT + 'px', printBackground: !INPUT_OMIT_BACKGROUND});
 
     // Then convert the PDF to SVG
     convertPdfToSvg(pdfFile, INPUT_OUTPUT);
+  } else if (INPUT_OUTPUT_TYPE == "pdf") {
+      const pdfFile = await page.pdf({path: INPUT_OUTPUT, width: INPUT_VIEWPORT_WIDTH + 'px', height: INPUT_VIEWPORT_HEIGHT + 'px', printBackground: !INPUT_OMIT_BACKGROUND});
   } else if (INPUT_OUTPUT_TYPE == "jpeg") {
     // Quality parameter is only valid for JPEG images
     await page.screenshot({path: INPUT_OUTPUT, 'quality': INPUT_IMAGE_QUALITY, 'type': INPUT_OUTPUT_TYPE, fullPage: INPUT_FULL_PAGE, omitBackground: INPUT_OMIT_BACKGROUND});
