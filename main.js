@@ -114,7 +114,7 @@ async function convertPdfToSvg(inputFile, outputFile) {
     // Then convert the PDF to SVG
     convertPdfToSvg(outputPdfFile, INPUT_OUTPUT);
 
-  } elseif (INPUT_OUTPUT_TYPE == "jpeg") {
+  } else if (INPUT_OUTPUT_TYPE == "jpeg") {
     // Quality parameter is only valid for JPEG images
     await page.screenshot({path: INPUT_OUTPUT, 'quality': INPUT_IMAGE_QUALITY, 'type': INPUT_OUTPUT_TYPE, fullPage: INPUT_FULL_PAGE, omitBackground: INPUT_OMIT_BACKGROUND});
   } else {
