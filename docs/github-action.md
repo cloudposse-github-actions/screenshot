@@ -13,6 +13,7 @@
 | omitBackground | Omit the browser default background. Enable to support transparency. | true | false |
 | output | Output image file path | screenshot.png | false |
 | outputType | Output image type | png | false |
+| puppeteerImage | Docker image to run puppeteer. See https://github.com/puppeteer/puppeteer/pkgs/container/puppeteer | ghcr.io/puppeteer/puppeteer:21.7.0 | false |
 | url | URL of the HTML content to convert to an image. Use file:// for local files | N/A | true |
 | viewportHeight | Viewport height in pixels | N/A | true |
 | viewportWidth | Viewport width in pixels | N/A | true |

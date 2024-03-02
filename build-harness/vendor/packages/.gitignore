@@ -1,0 +1,16 @@
+.build-harness
+build-harness
+/build-harness/
+.terraform
+*.tfstate
+*.tfstate.*
+.idea
+*.iml
+*.rsa*
+artifacts/
+logs/
+arm-status
+*.swp
+
+# bin/vert is a binary automatically downloaded and should not be checked in
+/bin/vert
