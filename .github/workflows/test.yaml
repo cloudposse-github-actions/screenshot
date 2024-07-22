@@ -17,7 +17,7 @@ jobs:
       contents: write
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Run this composite action
       id: screenshot
@@ -36,7 +36,7 @@ jobs:
         viewportWidth: 2000
         viewportHeight: 800
 
-    - uses: stefanzweifel/git-auto-commit-action@v4
+    - uses: stefanzweifel/git-auto-commit-action@v5
       name: Commit artifact
       id: auto-commit
       env:
