@@ -70,7 +70,7 @@ async function readYamlFile(filePath) {
   }
 
   if (fsSync.existsSync('custom.yaml')) {
-    console.log('Rewritting content');
+    console.log('Rewriting content');
     // Read the element paths from the file
     const elementPaths = await readYamlFile('custom.yaml');
 

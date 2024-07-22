@@ -17,13 +17,13 @@ inputs:
   output:
     description: 'Output image file path'
     required: false
-    default: screenshot.png
+    default: 'screenshot.png'
   outputType:
     description: 'Output image type'
-    default: png
+    default: 'png'
   omitBackground:
     description: 'Omit the browser default background. Enable to support transparency.'
-    default: true
+    default: 'true'
   viewportWidth:
     description: 'Viewport width in pixels'
     required: true
@@ -34,21 +34,21 @@ inputs:
     description: 'Quality of the output image (1-100, applicable for JPEG)'
     required: false
   consoleOutputEnabled:
-    descripion: 'Whether or not to output the browser console log'
-    default: true
+    description: 'Whether or not to output the browser console log'
+    default: 'true'
   deviceScaleFactor:
     description: 'Specifies the device scale factor (pixel ratio) for the web page rendering. It determines how many physical pixels are used to represent a single logical pixel. For example, a device scale factor of 2 means one logical pixel is represented by two physical pixels, commonly used for high-DPI (Retina) displays. A value of 1 uses standard pixel density. This factor affects the resolution and quality of the rendered page or screenshot.'
     default: '2'
     required: false
   fullPage:
     description: 'Screen capture the entire page by scrolling down'
-    default: false
+    default: 'false'
   waitForTimeout:
-    description: 'Number of miliseconds to delay before taking screenshot'
-    default: 500
+    description: 'Number of milliseconds to delay before taking screenshot'
+    default: '500'
   puppeteerImage:
     description: 'Docker image to run puppeteer. See https://github.com/puppeteer/puppeteer/pkgs/container/puppeteer'
-    default: 'ghcr.io/puppeteer/puppeteer:21.7.0'
+    default: 'ghcr.io/puppeteer/puppeteer:22.13.1'
 outputs:
   file:
     description: "File containing the generated screenshot"
@@ -61,25 +61,25 @@ runs:
       shell: bash
       run: |
         # Ensure node_modules folder will have correct permissions
-        mkdir -p ${{github.action_path}}/node_modules
+        mkdir -p '${{ github.action_path }}/node_modules'
 
         # Ensure parent directory containing output file exists
-        mkdir -p $(dirname "${{ github.workspace }}/${{ inputs.output }}")
+        mkdir -p $(dirname '${{ github.workspace }}/${{ inputs.output }}')
 
         # Ensure docker container can write this workspace as an unprivileged user
-        chmod ugoa+rw -R ${{ github.workspace }} ${{github.action_path}}
+        chmod ugoa+rw -R '${{ github.workspace }}' '${{ github.action_path }}'
 
         # Write out customizations
-        cat <<__EOF__ | tee -i ${{github.action_path}}/custom.css
+        cat <<'__EOF__' | tee -i '${{ github.action_path }}/custom.css'
         ${{ inputs.css }}
         __EOF__
 
-        cat <<__EOF__ | tee -i ${{github.action_path}}/custom.yaml
+        cat <<'__EOF__' | tee -i ${{ github.action_path }}/custom.yaml
         ${{ inputs.customizations }}
         __EOF__
 
         # Prepare inputs that should be passed to the docker container.
-        cat<<__EOF__>docker.env
+        cat <<'__EOF__' >docker.env
         LANG=C.UTF-8
         GITHUB_WORKSPACE=${{ github.workspace }}
         ACTION_PATH=${{ github.action_path }}
@@ -99,24 +99,25 @@ runs:
         cat docker.env
 
         # Avoid duplicate mount points
-        if [ "$(realpath ${{ github.workspace }})" == "$(realpath ${{ github.action_path }})" ]; then
-          echo "DOCKER_VOLUMES=-v ${{ github.workspace }}:${{ github.workspace }}:rw" >> "$GITHUB_ENV"
+        if [ "$(realpath "${{ github.workspace }}")" == "$(realpath "${{ github.action_path }}")" ]; then
+          echo "DOCKER_VOLUMES=-v "${{ github.workspace }}":"${{ github.workspace }}":rw" >> "$GITHUB_ENV"
         else
-          echo "DOCKER_VOLUMES=-v ${{ github.workspace }}:${{ github.workspace }}:rw -v ${{ github.action_path }}:${{ github.action_path }}:rw" >> "$GITHUB_ENV" 
+          echo "DOCKER_VOLUMES=-v "${{ github.workspace }}":"${{ github.workspace }}":rw -v "${{ github.action_path }}":"${{ github.action_path }}":rw" >> "$GITHUB_ENV" 
         fi
 
     - name: Run puppeteer to take screenshot
       id: screenshot
       uses: tj-actions/docker-run@v2
       with:
-        image: ${{ inputs.puppeteerImage }}
+        image: "${{ inputs.puppeteerImage }}"
         name: puppeteer-chrome
-        options: '-i --init --cap-add=SYS_ADMIN ${{ env.DOCKER_VOLUMES }} --workdir=${{github.action_path}} --env-file docker.env'
+        # No quotes around ${{ env.DOCKER_VOLUMES }} because it is a list of arguments
+        options: '-i --init --cap-add=SYS_ADMIN ${{ env.DOCKER_VOLUMES }} --workdir="${{github.action_path}}" --env-file docker.env'
         args: |
           bash -c './entrypoint.sh'
 
     - id: context
       shell: bash
       run: |
-          echo "file=${{ inputs.output }}" >> $GITHUB_OUTPUT
+          printf 'file=%s\n' '${{ inputs.output }}' >> $GITHUB_OUTPUT
 
