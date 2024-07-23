@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs').promises; // Import the fs module
 const fsSync = require('fs');
 const yaml = require('js-yaml');
+const { setTimeout } = require('node:timers/promises');
 
 const GITHUB_WORKSPACE = process.env.GITHUB_WORKSPACE || '.';
 const INPUT_OUTPUT = process.env.INPUT_OUTPUT || 'docs/example.png';
@@ -60,7 +61,7 @@ async function readYamlFile(filePath) {
   await page.goto(INPUT_URL, {
     waitUntil: 'networkidle2',
   });
-  await page.waitForTimeout(INPUT_WAIT_FOR_TIMEOUT);
+  await setTimeout(INPUT_WAIT_FOR_TIMEOUT);
 
   // Check if the custom.css file exists
   if (fsSync.existsSync('custom.css')) {
@@ -70,7 +71,7 @@ async function readYamlFile(filePath) {
   }
 
   if (fsSync.existsSync('custom.yaml')) {
-    console.log('Rewritting content');
+    console.log('Rewriting content');
     // Read the element paths from the file
     const elementPaths = await readYamlFile('custom.yaml');
 
@@ -88,7 +89,7 @@ async function readYamlFile(filePath) {
       });
     }, elementPaths);
   
-    await page.waitForTimeout(2000);
+    await setTimeout(2000);
   
   }
   if (INPUT_OUTPUT_TYPE == "jpeg") {
