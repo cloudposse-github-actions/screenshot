@@ -1,60 +1,61 @@
 name: Test
-
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: The fully-formed ref of the branch or tag that triggered the workflow run
+        required: false
+        type: string
+      sha:
+        description: The sha of the commit that triggered the workflow run
+        required: false
+        type: string
 jobs:
   screenshot:
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
       cancel-in-progress: true
-
     permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push the
       # added or changed files to the repository.
       contents: write
-
     steps:
-    - uses: actions/checkout@v4
-
-    - name: Run this composite action
-      id: screenshot
-      uses: ./ # Use the path to your action directory
-      with:
-        # Your action's inputs
-        url: "file://${{github.workspace}}/test/html/index.html"
-        output: "docs/example.png"
-        css: |
-          body {
-            background: rgb(2,0,36);
-            background: linear-gradient(139deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 56%, rgba(147,0,255,1) 100%);
-          }
-        customizations: |
-          "#name": "${{ github.event.repository.name }} 📷"
-        viewportWidth: 2000
-        viewportHeight: 800
-
-    - uses: stefanzweifel/git-auto-commit-action@v5
-      name: Commit artifact
-      id: auto-commit
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        commit_message: "chore: update example image"
-        commit_user_name: screenshot-action 📷
-        commit_user_email: actions@github.com
-        commit_author: screenshot-action 📷 <actions@github.com>
-        file_pattern: 'docs/*.png'
-
-    - name: Add Image to Step Summary
-      if: steps.auto-commit.outputs.changes_detected == 'true'
-      run: |
-        echo "## Generated Screenshot" >> $GITHUB_STEP_SUMMARY
-        echo "![Generated Screenshot](https://github.com/${{ github.repository }}/blob/${{ steps.auto-commit.outputs.commit_hash }}/${{ steps.screenshot.outputs.file }}?raw=true)" >> $GITHUB_STEP_SUMMARY
-
-    - name: No changes
-      if: steps.auto-commit.outputs.changes_detected == 'false'
-      run: |
-        echo "No changes to screenshot" >> $GITHUB_STEP_SUMMARY
+      - uses: actions/checkout@v4
+      - name: Run this composite action
+        id: screenshot
+        uses: ./ # Use the path to your action directory
+        with:
+          # Your action's inputs
+          url: "file://${{github.workspace}}/test/html/index.html"
+          output: "docs/example.png"
+          css: |
+            body {
+              background: rgb(2,0,36);
+              background: linear-gradient(139deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 56%, rgba(147,0,255,1) 100%);
+            }
+          customizations: "\"#name\": \"${{ github.event.repository.name }} \U0001F4F7\"\n"
+          viewportWidth: 2000
+          viewportHeight: 800
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        name: Commit artifact
+        id: auto-commit
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          commit_message: "chore: update example image"
+          commit_user_name: "screenshot-action \U0001F4F7"
+          commit_user_email: actions@github.com
+          commit_author: "screenshot-action \U0001F4F7 <actions@github.com>"
+          file_pattern: 'docs/*.png'
+      - name: Add Image to Step Summary
+        if: steps.auto-commit.outputs.changes_detected == 'true'
+        run: |
+          echo "## Generated Screenshot" >> $GITHUB_STEP_SUMMARY
+          echo "![Generated Screenshot](https://github.com/${{ github.repository }}/blob/${{ steps.auto-commit.outputs.commit_hash }}/${{ steps.screenshot.outputs.file }}?raw=true)" >> $GITHUB_STEP_SUMMARY
+      - name: No changes
+        if: steps.auto-commit.outputs.changes_detected == 'false'
+        run: |
+          echo "No changes to screenshot" >> $GITHUB_STEP_SUMMARY
